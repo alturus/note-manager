@@ -1,0 +1,18 @@
+<div class="login-form">
+    <form ng-submit="doLogin(user)">
+        <h2 class="text-center">Log in</h2>
+        <div class="form-group">
+            <input type="text" ng-model="user.username" id="loginUsername" class="form-control" placeholder="Имя пользователя" required="required">
+        </div>
+        <div class="form-group">
+            <input type="password" ng-model="user.password" class="form-control" placeholder="Пароль" required="required">
+        </div>
+        <div class='alert alert-danger' ng-show='loginError.detail'>
+            <span>{{ loginError.detail }}</span>
+        </div>
+        <div class="form-group">
+            <button type="submit" value='Login' class="btn btn-primary btn-block">Войти</button>
+        </div>
+    </form>
+    <p class="text-center"><a ng-href="/register">Создать пользователя</a></p>
+</div>

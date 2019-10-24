@@ -1,0 +1,74 @@
+<div class="container">
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row">
+                <div class="col-sm-8"><h2>Всего заметок: {{ totalItems }}</h2></div>
+                <div class="col-sm-4">
+                    <a ng-href='/note/add' class="btn btn-info add-new"><i class="fa fa-plus"></i> Добавить</a>
+                </div>
+            </div>
+        </div>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="sortable" data-ng-click="singleSort('created')">
+                    Дата
+                    <span class="caret-blank"
+                          data-ng-class="{'caret-down':sortDescend('created'), 'caret-up':sortAscend('created')}">
+					</span>
+                </th>
+                <th class="sortable" data-ng-click="singleSort('category')">
+                    Категория
+                    <span class="caret-blank"
+                          data-ng-class="{'caret-down':sortDescend('category'), 'caret-up':sortAscend('category')}">
+					</span>
+                </th>
+                <th class="sortable" data-ng-click="singleSort('title')">
+                    Заголовок
+                    <span class="caret-blank"
+                          data-ng-class="{'caret-down':sortDescend('title'), 'caret-up':sortAscend('title')}">
+					</span>
+                </th>
+                <th class="sortable" data-ng-click="singleSort('is_favorited')">
+                    Избр.
+                    <span class="caret-blank"
+                          data-ng-class="{'caret-down':sortDescend('is_favorited'), 'caret-up':sortAscend('is_favorited')}">
+					</span>
+                </th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="note in items">
+                <td>{{ note.created }}</td>
+                <td>{{ note.category }}</td>
+                <td ng-if="note.is_published">
+                    <a href="/note/{{note.uuid}}" target="_self">{{ note.title }}</a>
+                </td>
+                <td ng-if="!note.is_published">
+                    {{ note.title }}
+                </td>
+                <td>
+                    <a class="fav text-black-50" title="Добавить в избранное" data-toggle="tooltip" ng-click="favNote(note, 1)" ng-if="!note.is_favorited"><i class="material-icons">&#xE83a;</i></a>
+                    <a class="fav" title="Избранная" data-toggle="tooltip" ng-click="favNote(note, 0)" ng-if="note.is_favorited"><i class="material-icons">&#xE838;</i></a>
+                </td>
+                <td>
+                    <a class="pub text-black-50" title="Опубликовать" data-toggle="tooltip" ng-click="pubNote(note, 1)" ng-if="!note.is_published"><i class="material-icons">&#xe2c2;</i></a>
+                    <a class="pub" title="Опубликованная" data-toggle="tooltip" ng-click="pubNote(note, 0)" ng-if="note.is_published"><i class="material-icons">&#xe2bf;</i></a>
+                    <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                    <a class="edit" title="Edit" data-toggle="tooltip" ng-href='/note/edit/{{ note.uuid }}'><i class="material-icons">&#xE254;</i></a>
+                    <a class="delete" title="Delete" data-toggle="tooltip" ng-click="askDeleteNote(note)"><i class="material-icons">&#xE872;</i></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row justify-content-md-center" ng-show="(totalItems > itemsPerPage)">
+        <ul uib-pagination
+            total-items="totalItems"
+            items-per-page="itemsPerPage"
+            ng-model="currentPage"
+            ng-change="pageChanged()">
+        </ul>
+    </div>
+</div>
