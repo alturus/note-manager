@@ -15,7 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
             'is_admin',
             'password',
         )
-        write_only_fields = ('password',)
+        extra_kwargs = {'password': {'write_only': True}}
 
     def validate_password(self, value):
         password_validation.validate_password(value, self.instance)
@@ -26,13 +26,3 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
-
-    @property
-    def data(self):
-        tokens = self.instance.token_pair
-        content = {
-            "username": str(self.instance.username),
-            "access": str(tokens['access']),
-            "refresh": str(tokens['refresh']),
-        }
-        return content
