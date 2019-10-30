@@ -1,5 +1,6 @@
 from rest_framework import generics, permissions
 
+from api.notes.filters import NoteListFilter
 from api.notes.models import Note
 from api.notes.serializers import NoteListSerializer, NoteDetailSerializer
 from api.users.permissions import IsAdminOrOwner
@@ -27,13 +28,7 @@ class NoteList(generics.ListCreateAPIView):
 
         return queryset
 
-    filter_fields = (
-        'title',
-        'category',
-        'created',
-        'is_published',
-        'is_favorited',
-    )
+    filter_class = NoteListFilter
     search_fields = ('title', )
     ordering_fields = (
         'title',
