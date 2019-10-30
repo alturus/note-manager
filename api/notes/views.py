@@ -1,16 +1,23 @@
 from rest_framework import generics, permissions
 
 from api.notes.models import Note
-from api.notes.serializers import NoteSerializer
+from api.notes.serializers import NoteListSerializer, NoteDetailSerializer
 from api.users.permissions import IsAdminOrOwner
 
 
 class NoteList(generics.ListCreateAPIView):
-    serializer_class = NoteSerializer
+    serializer_classes = {
+        'list': NoteListSerializer,
+        'create': NoteDetailSerializer,
+    }
     name = 'note-list'
     permission_classes = (
         permissions.IsAuthenticated,
     )
+
+    def get_serializer_class(self):
+        action = 'create' if self.request.method == 'POST' else 'list'
+        return self.serializer_classes[action]
 
     def get_queryset(self):
         queryset = Note.objects.all()
@@ -42,7 +49,7 @@ class NoteList(generics.ListCreateAPIView):
 
 class NoteDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Note.objects.all()
-    serializer_class = NoteSerializer
+    serializer_class = NoteDetailSerializer
     name = 'note-detail'
     permission_classes = (
         permissions.IsAuthenticated,
