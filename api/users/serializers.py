@@ -15,6 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
             'is_admin',
             'password',
         )
+        read_only_fields = ('is_active', 'is_admin',)
         extra_kwargs = {'password': {'write_only': True}}
 
     def validate_password(self, value):
